@@ -43,7 +43,7 @@ class dinosaurio(Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = self.POSITION_X
         self.rect.y = self.POSITION_Y
-        self.step += 1
+        self.step = 1
     
     def jump(self):
         self.image = JUMPING
