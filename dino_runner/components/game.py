@@ -31,6 +31,8 @@ class Game:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.playing = False
+        #
+
 
     def update(self):
         user_input = pygame.key.get_pressed()
