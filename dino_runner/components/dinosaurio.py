@@ -85,10 +85,10 @@ class dinosaurio(Sprite):
         
     #tarea dino duck (viernes 3)
     def duck(self):
-        self.image = DUCKING[self.step // 10]
+        self.image = DUCKING[self.step // 5]
         self.rect = self.image.get_rect()
         self.rect.x = self.POSITION_X
-        self.rect.y = 345
+        self.rect.y = 345 #constante
         self.step += 1
         
     def draw(self,screen):
