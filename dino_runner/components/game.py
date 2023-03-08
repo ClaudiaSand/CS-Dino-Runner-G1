@@ -1,8 +1,6 @@
 import pygame
 from dino_runner.components.dinosaurio import dinosaurio
-from dino_runner.components.obstacles import obstacle_manager
-from dino_runner.components.obstacles.cactus import Cactus
-
+from dino_runner.components.obstacles.cactus import Cactus 
 from dino_runner.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS
 
 
@@ -20,7 +18,7 @@ class Game:
         #dias 1 viernes
         self.player = dinosaurio()
         #dia 2 lunes
-        self.Obstacle_Manager = obstacle_manager() 
+        self.cactus = Cactus()
 
     def run(self):
         # Game loop: events - update - draw
@@ -30,26 +28,27 @@ class Game:
             self.update()
             self.draw()
         pygame.quit()
-
+        
+    def start_game(self):
+        pass
+    
     def events(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.playing = False
-        #
-
 
     def update(self):
         user_input = pygame.key.get_pressed()
-        self.player.update(user_input)
-        self.obstacle_manager.update(self.game_speed,self.player,self)
+        self.player.update(user_input) 
+        
 
     def draw(self):
         self.clock.tick(FPS)
         self.screen.fill((255, 255, 255))
         self.draw_background()
         self.player.draw(self.screen)
-        self.obstacle_manager.draw(self.screen)
-        # pygame.display.update()
+        self.cactus.draw(self.screen)
+        # pygame.display.update()6
         pygame.display.flip()
         
 
