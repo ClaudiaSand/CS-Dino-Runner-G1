@@ -1,31 +1,41 @@
+import random
 import pygame
 
-from random import randint
-from dino_runner.components.obstacles.cactus import Cactus ,SMALL_CACTUS_TYPE, LARGE_CACTUS_TYPE
+
+from dino_runner.components.obstacles.bird import Bird
+from dino_runner.components.obstacles.cactus import SmallCactus
+from dino_runner.components.obstacles.obstacle import Obstacle
 
 class ObstacleManager:
-    def __init__( self ):
+    def __init__(self):
         self.obstacles = []
-    
-    def update( self,game_speed,player,on_death ):
-        if not self.obstacles:
-            if randint( 0,1):
-                self.obstacles.append(Cactus(SMALL_CACTUS_TYPE))
-            else:
-                self.obstacles.append(Cactus(LARGE_CACTUS_TYPE))
-                
+        self.obstacle_groups = [
+            (SmallCactus(), 0.6), # 60% probability of small cactus
+            (Bird(), 0.2), # 20% probability of bird
+            (SmallCactus(), 0.3), # 30% probability of small cactus
+        ]
+        self.obstacle_group = pygame.sprite.Group()
+        self.obstacle_timer = 0
+        
+    def update(self, game_speed, player, game):
+        self.obstacle_timer += game_speed / 100.0 # increment timer based on game speed
+        
+        if not self.obstacles or self.obstacle_timer >= 3:
+            self.obstacles = []
+            self.obstacle_group.empty()
+            for obstacle, probability in self.obstacle_groups:
+                num_obstacles = int(probability * 4)
+                for _ in range(num_obstacles):
+                    self.obstacles.append(obstacle)
+                    self.obstacle_group.add(obstacle)
+            
+            self.obstacle_timer = 0 # reset timer
+        
         for obstacle in self.obstacles:
-            obstacle.update(game_speed,self.rect)
+            obstacle.update(game_speed)
             if player.rect.colliderect(obstacle.rect):
                 pygame.time.delay(500)
-                on_death()
-                
-    
-    def draw( self, screen ):
-        for obstacle in self.obstacles:
-            obstacle.draw(screen)
-            
-    def reset( self ):
-        self.obstacles = []
-    
-    
+                game.playing = False
+        
+    def draw(self, screen):
+        self.obstacle_group.draw(screen)
