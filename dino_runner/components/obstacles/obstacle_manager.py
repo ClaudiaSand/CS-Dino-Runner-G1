@@ -17,7 +17,7 @@ class ObstacleManager:
         self.obstacle_group = pygame.sprite.Group()
         self.obstacle_timer = 0
         
-    def update(self, game_speed, player, game):
+    def update(self, game_speed, player, game, on_death):
         self.obstacle_timer += game_speed / 100.0 # increment timer based on game speed
         
         if not self.obstacles or self.obstacle_timer >= 3:
@@ -36,6 +36,11 @@ class ObstacleManager:
             if player.rect.colliderect(obstacle.rect):
                 pygame.time.delay(500)
                 game.playing = False
+                on_death()
         
     def draw(self, screen):
         self.obstacle_group.draw(screen)
+        
+    #modificado
+    #def reset(self, screen):
+    #    self.obstacle_groups.reset = []
